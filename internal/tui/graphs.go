@@ -59,9 +59,6 @@ func lineChart(data []float64, w, h int) string {
 	if len(data) == 0 || w < 8 || h < 3 {
 		return ""
 	}
-	if h < 3 {
-		h = 3
-	}
 
 	dMin, dMax := data[0], data[0]
 	for _, v := range data[1:] {
