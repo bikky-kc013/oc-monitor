@@ -15,10 +15,10 @@ A real-time terminal UI for monitoring [OpenCode](https://github.com/anomalyco/o
 
 ## Screenshots
 
-| Live View                                    | Sessions View                                   |
-| -------------------------------------------- | ----------------------------------------------- |
-| ![Live View](agents.png)                     | ![Sessions View](usage.png)                     |
-| Real-time agent status and burn rate         | List of all sessions with cost and token data   |
+| Live View                                                                   | Sessions View                                                                   |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| ![Live View](screenshots/agents.png) | ![Sessions View](screenshots/usage.png) |
+| Real-time agent status and burn rate                                        | List of all sessions with cost and token data                                   |
 
 ## Requirements
 
