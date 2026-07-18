@@ -1,0 +1,15 @@
+oc-monitor
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+go.work.sum
+.cache/
+debug.log
+*.db
+*.db-wal
+*.db-shm
+oc-monitor-exports/
