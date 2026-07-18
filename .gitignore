@@ -1,4 +1,3 @@
-oc-monitor
 *.exe
 *.dll
 *.so
@@ -12,4 +11,3 @@ debug.log
 *.db
 *.db-wal
 *.db-shm
-oc-monitor-exports/
