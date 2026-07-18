@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"path/filepath"
 	"time"
 )
@@ -69,7 +70,7 @@ func (d *DB) ProjectRollups() ([]ProjectRow, error) {
 
 		var providerID, modelID string
 		var discard int
-		d.conn.QueryRow(`
+		err := d.conn.QueryRow(`
 			SELECT COALESCE(json_extract(m.data,'$.agent'), ''),
 				COALESCE(json_extract(m.data,'$.providerID'), ''),
 				COALESCE(json_extract(m.data,'$.modelID'), ''),
@@ -79,6 +80,9 @@ func (d *DB) ProjectRollups() ([]ProjectRow, error) {
 			WHERE s.directory = ? AND json_extract(m.data,'$.role') = 'assistant'
 			GROUP BY 1, 2, 3 ORDER BY c DESC LIMIT 1`,
 			r.FullPath).Scan(&r.Agent, &providerID, &modelID, &discard)
+		if err != nil && err != sql.ErrNoRows {
+			return nil, err
+		}
 		r.Model = joinModel(providerID, modelID)
 		out = append(out, r)
 	}

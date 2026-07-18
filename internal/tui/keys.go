@@ -105,7 +105,13 @@ func (m *model) searchKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "enter":
 		m.searching = false
 		if m.query != "" {
-			m.results, _ = m.d.Search(m.query, 100)
+			results, err := m.d.Search(m.query, 100)
+			if err != nil {
+				m.loadErr = err.Error()
+				return m, nil
+			}
+			m.results = results
+			m.loadErr = ""
 			m.view = vSearch
 			m.cursor = 0
 			m.syncTable()
@@ -172,9 +178,16 @@ func (m *model) enterDetail() tea.Cmd {
 
 
 func (m *model) exportJSON() {
-	home, _ := os.UserHomeDir()
+	home, err := os.UserHomeDir()
+	if err != nil {
+		m.loadErr = err.Error()
+		return
+	}
 	dir := filepath.Join(home, "oc-monitor-exports")
-	os.MkdirAll(dir, 0o755)
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		m.loadErr = err.Error()
+		return
+	}
 	ts := time.Now().Format("20060102-150405")
 	view := strings.ToLower(viewLabels[m.view])
 	name := filepath.Join(dir, fmt.Sprintf("oc-monitor-%s-%s.json", view, ts))
@@ -200,9 +213,14 @@ func (m *model) exportJSON() {
 	}
 	b, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {
+		m.loadErr = err.Error()
 		return
 	}
-	os.WriteFile(name, b, 0o644)
+	if err := os.WriteFile(name, b, 0o644); err != nil {
+		m.loadErr = err.Error()
+		return
+	}
+	m.loadErr = ""
 }
 
 func (m *model) maxCur() int {

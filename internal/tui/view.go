@@ -280,47 +280,6 @@ func (m *model) renderHeader(w int) string {
 	return titledBoxDouble("", []string{line1, line2}, w, cAccent)
 }
 
-// ─── Now panel (non-wide) ───────────────────────────────────────────────────
-
-func (m *model) renderNowPanel(w int) string {
-	if len(m.live) == 0 {
-		return titledBox("now", []string{emptyState("no active agents right now")}, w, cBorder)
-	}
-	var lines []string
-	limit := len(m.live)
-	if limit > 6 {
-		limit = 6
-	}
-	for _, s := range m.live[:limit] {
-		agent := s.Agent
-		if agent == "" {
-			agent = "agent"
-		}
-		model := s.ModelID
-		if model == "" {
-			model = "—"
-		}
-		title := s.Title
-		if len(title) > 24 {
-			title = title[:21] + "..."
-		}
-		status, statusStyle := activityStatus(m.activity[s.ID])
-
-		maxTok := m.d.MaxInputTokens(s.ModelID)
-		inTok := m.inputTokens[s.ID]
-		pct := 0.0
-		if maxTok > 0 {
-			pct = float64(inTok) / float64(maxTok) * 100
-		}
-
-		lines = append(lines, fmt.Sprintf("%s %s  %s  %s  %s",
-			sDot.Render("●"), sBold.Render(agent), sDim.Render(model), sDim.Render(title), statusStyle.Render(status)))
-		lines = append(lines, fmt.Sprintf("   %s  %s  %s",
-			ctxBar(pct, 14), sCost.Render(fmt.Sprintf("$%.4f", s.Cost)), sDim.Render(timeAgo(s.Updated)+" ago")))
-	}
-	return titledBox("now", lines, w, cOK)
-}
-
 // ─── Tabs ────────────────────────────────────────────────────────────────────
 
 func (m *model) renderTabs() string {

@@ -22,7 +22,7 @@ A real-time terminal UI for monitoring [OpenCode](https://github.com/anomalyco/o
 
 ## Requirements
 
-- [OpenCode](https://github.com/opencode-ai/opencode) installed and run at least once (creates `opencode.db`)
+- [OpenCode](https://github.com/anomalyco/opencode) installed and run at least once (creates `opencode.db`)
 - Go 1.21+ (to build from source)
 
 ## Installation
